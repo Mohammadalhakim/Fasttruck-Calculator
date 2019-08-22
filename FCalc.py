@@ -1,0 +1,328 @@
+from tkinter import *
+from tkinter import filedialog
+import csv
+import os
+import socket
+import ast
+
+
+class Calc:
+    vd_list = []
+
+    def __init__(self):
+        os.chdir('Calculator Files')
+        root.title('Fasttruck Calculator')
+        root.geometry('1350x1000')
+        self.frame = Frame(root, pady = 20, padx =10)
+        self.frame.grid(column=0, row=0, sticky=(N, W, E, S))
+
+
+    def menu(self):
+        menubar  = Menu(self.frame)
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Open", command=cal.openfile)
+        filemenu.add_command(label="Exit", command=root.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+        root.config(menu=menubar)
+
+    def openfile(self):
+        filename = filedialog.askopenfilename()
+        file = open(filename)
+        input  = list(csv.reader(file))
+        for i in range(len(self.vd_list)):
+            entry = Entry(self.frame, width = self.tile_list[i].width,
+            textvariable = self.tile_list[i].textvariable)
+            entry.delete(0, END)
+            entry.insert(END, input[i+1][1])
+            entry.grid(column = self.tile_list[i].entryCol,
+            row = self.tile_list[i].entryRow, pady = self.tile_list[i].pady,
+            padx = self.tile_list[i].padx,
+            sticky = self.tile_list[i].entrySticky)
+        file.close()
+
+
+
+    def vd(self):
+
+         self.vd_list.append([StringVar(), 'SN 500', 0.891, 0.00 ])
+         self.vd_list.append([StringVar(), 'SN 150', 0.881, 0.00 ])
+         self.vd_list.append([StringVar(), 'N 500 (GII)', 0.869, 0.00 ])
+         self.vd_list.append([StringVar(), 'N 150 (GII)', 0.8625, 0.00 ])
+         self.vd_list.append([StringVar(), 'BS 150', 0.8975, 0.0 ])
+         self.vd_list.append([StringVar(), 'est 4 (GIII)', 0.850, 0.0 ])
+         self.vd_list.append([StringVar(), 'est 6 (GIII)', 0.854, 0.0 ])
+         self.vd_list.append([StringVar(), 'LBO', 0.8725, 0.0])
+         self.vd_list.append([StringVar(), 'MBO', 0.8725, 0.0])
+         self.vd_list.append([StringVar(), 'HBO', 0.8775, 0.0 ])
+         self.vd_list.append([StringVar(), 'Virgin VI', 0.850, 0.0])
+         self.vd_list.append([StringVar(), 'VII (P.132)', 0.847, 0.0 ])
+         self.vd_list.append([StringVar(), 'VII (P.132 GII)', 0.850, 0.0 ])
+         self.vd_list.append([StringVar(), 'Block (VII) (GII)', 0.853, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6391', 0.999, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6585', 1.015, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6874', 0.985, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6772', 1.065, 0.0])
+         self.vd_list.append([StringVar(), '(TBN) MADDOC 4140', 1.215, 0.0 ])
+         self.vd_list.append([StringVar(), '(PPD) MADOC (3811)', 0.890, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 9890', 0.893, 0.0 ])
+         self.vd_list.append([StringVar(), '(Block) HITEC 5825H', 0.869, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 8712', 1.036, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 12204L', 0.972, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 12200', 0.989, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 521', 1.031, 0.0])
+         self.vd_list.append([StringVar(), 'HITEC 9325', 0.980, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 419', 0.92, 0.0 ])
+         self.vd_list.append([StringVar(), 'ANTIFOAM', 0.78, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 4961', 0.969, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6395', 0.990, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6577', 1.035, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6211', 1.080, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6358', 0.995, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 6884', 0.970, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 5122', 1.087, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 5252', 0.925, 0.0 ])
+         self.vd_list.append([StringVar(), 'MADDOC 5470', 1.087, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 523', 0.990, 0.0 ])
+         self.vd_list.append([StringVar(), 'HITEC 9305 (TBN)', 1.107, 0.0])
+         self.vd_list.append([StringVar(), 'HITEC 343', 1.080, 0.0 ])
+
+
+
+    def make_tile(self):
+          self.tile_list = []
+          for i in range(len(self.vd_list)):
+              tile = Tile_class()
+              #text
+              tile.text = self.vd_list[i][1]
+              #textvariable
+              tile.textvariable = self.vd_list[i][0]
+              #column for label and entry
+              if i < 33:
+                  if i%3 == 0:
+                      tile.labelCol = 0
+                      tile.entryCol = 1
+                  elif i%3 == 1:
+                      tile.labelCol = 2
+                      tile.entryCol = 3
+                  elif i%3 == 2:
+                      tile.labelCol = 4
+                      tile.entryCol = 5
+                  #rows for both
+                  tile.labelRow = tile.entryRow = i//3
+              else:
+                  if i%3 == 0:
+                      tile.labelCol = 6
+                      tile.entryCol = 7
+                  elif i%3 == 1:
+                      tile.labelCol = 8
+                      tile.entryCol = 9
+                  elif i%3 == 2:
+                      tile.labelCol = 10
+                      tile.entryCol = 11
+                  elif i%3 == 3:
+                      tile.labelCol = 12
+                      tile.entryCol = 13
+                      tile.padx = (0,0)
+                  #rows for both
+                  tile.labelRow = tile.entryRow = (i//4)
+
+              self.tile_list.append(tile)
+
+          for tile in self.tile_list:
+              Label(self.frame, text = tile.text).grid(column = tile.labelCol,
+               row = tile.labelRow, sticky = tile.labelSticky)
+              entry = Entry(self.frame, width = tile.width,
+              textvariable = tile.textvariable)
+              entry.insert(END, '0')
+              entry.grid(column = tile.entryCol, row = tile.entryRow,
+              pady = tile.pady, padx = tile.padx, sticky = tile.entrySticky)
+
+    def tickbox(self):
+
+        self.system = IntVar()
+        Checkbutton(self.frame, text='Use Formula',
+	    command=  cal.okay_button, variable=self.system,
+	    onvalue= 1, offvalue= 0).grid(column = 11, row =  5)
+
+
+    def okay_button(self):
+
+        if self.system.get() == 1:
+            self.okay = Button(self.frame, text='Okay', command = cal.calculate1)
+            self.okay.grid(column = 7, row = 5)
+
+        elif self.system.get() == 0:
+            self.okay = Button(self.frame, text='Okay', command = cal.calculate0)
+            self.okay.grid(column = 7, row = 5)
+
+
+    def display_price(self):
+        total_cost = StringVar()
+
+        cost = 0.0
+
+        ratio_total = 0.0
+        for i in range(len(self.vd_list)):
+             ratio_total += int(self.vd_list[i][0].get())
+
+        for i in range(len(self.vd_list)):
+            if float(self.vd_list[i][0].get()) == 0.0:
+                vol = 0
+            else:
+                vol = float(self.volume_input.get())/ratio_total
+
+            volume = vol*float(self.vd_list[i][0].get()) # multiplies the ratio of the chemical by the volume in a 'one ratio'
+            cost += volume*float(self.vd_list[i][3])
+
+            total_cost.set(round(cost, 4))
+
+
+        Label(self.frame, text = ' '*50).grid(column = 7, row = 1, columnspan = 2)
+        Label(self.frame, textvariable = total_cost).grid(column = 7, row = 1, columnspan = 2)
+
+
+
+
+    def calculate0(self):
+
+         total_volume = StringVar()
+         #this basically adds the volumes into volume
+         volume = 0.0
+         for i in range(len(self.vd_list)):
+
+             if self.vd_list[i][0].get()[-1] == 'v':
+                 volume += float(self.vd_list[i][0].get()[:-1])
+             else:
+                 volume += float(self.vd_list[i][0].get())/self.vd_list[i][2]
+
+         total_volume.set(round(volume, 4))
+         Label(self.frame, text = ' '*50).grid(column = 7, row = 0, columnspan = 2)
+         Label(self.frame, textvariable = total_volume).grid(column = 7, row = 0, columnspan = 2)
+
+    def calculate1(self):
+        ratio_output = open('Output', 'w')
+        ratio_output.write('chemical , ratio , volume , mass, cost\n\n')
+        ratio_total = 0
+        try:
+
+            for i in range(len(self.vd_list)):
+                 ratio_total += int(self.vd_list[i][0].get())
+
+
+            for i in range(len(self.vd_list)):
+                if float(self.vd_list[i][0].get()) == 0.0:
+                    vol = 0
+                else:
+                    vol = float(self.volume_input.get())/ratio_total
+                volume = vol*float(self.vd_list[i][0].get())
+                row  = ''
+                row += self.vd_list[i][1]
+                row += ' , ' + self.vd_list[i][0].get()
+                row += ' , ' + str(round(volume, 3))
+                row += ' , ' + str(round( volume/self.vd_list[i][2], 3))
+                row += ' , ' + str(round( volume *self.vd_list[i][3], 3))  + '\n\n'
+                ratio_output.write(row)
+
+        except ZeroDivisionError as error:
+            pass
+
+        ratio_output.close()
+        self.display_price()
+
+
+    def volume_input(self):
+
+        self.volume_input = StringVar()
+        Label(self.frame, text = 'Total Input Volume: ').grid(column = 10, row = 0, sticky = E)
+        entry = Entry(self.frame, width = 10, textvariable = self.volume_input)
+        entry.insert(END, '0')
+        entry.grid(column = 11, row = 0, sticky = W)
+
+    def reset_button(self):
+
+        reset = Button(self.frame, text='Reset', command = cal.reset)
+        reset.grid(column = 9, row =  6 )
+
+    def reset(self):
+        for tile in self.tile_list:
+            entry = Entry(self.frame, width = tile.width, textvariable = tile.textvariable)
+            entry.delete(0, END)
+            entry.insert(END, '0')
+            entry.grid(column = tile.entryCol, row = tile.entryRow, pady = tile.pady, padx = tile.padx, sticky = tile.entrySticky)
+
+    def connect_button(self):
+
+
+        self.okay = Button(self.frame, text='Get Prices', command = cal.connect)
+        self.okay.grid(column = 9, row = 5)
+
+
+    def connect(self):
+
+        host = '10.0.0.28'
+        port = 5000
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((host, port))
+
+        print('Connected!')
+
+        s.send('2'.encode())
+        data  = s.recv(1024)
+        prices  = ast.literal_eval(data.decode())
+
+        for i in range(len(self.vd_list)):
+            self.vd_list[i][3] = prices[i][1]
+
+        print(prices)
+
+
+    def volume(self):
+
+         Label(self.frame, text = 'Total Volume:').grid(column = 6, row = 0)
+
+         Label(self.frame, text = 'Total Cost:').grid(column = 6, row = 1)
+
+
+
+    def load_button(self):
+
+         reset = Button(self.frame, text='Load', command = cal.load)
+         reset.grid(column = 8, row =  6 )
+
+    def load(self):
+         i = 0
+         for tile in self.tile_list:
+             entry = Entry(self.frame, width = tile.width, textvariable = tile.textvariable)
+             entry.delete(0, END)
+             entry.insert(END, str(self.vd_list[i][3]))
+             entry.grid(column = tile.entryCol, row = tile.entryRow, pady = tile.pady, padx = tile.padx, sticky = tile.entrySticky)
+             i += 1
+
+
+class Tile_class:
+     text = ''
+     labelCol = 0
+     labelRow = 0
+     labelSticky  = E
+     entrySticky = W
+     width = 10
+     textvariable = None
+     entryCol = 1
+     entryRow = 0
+     padx = (0, 20)
+     pady = (20,20)
+
+
+root = Tk()
+cal = Calc()
+cal.vd()
+cal.make_tile()
+cal.tickbox()
+cal.okay_button()
+cal.volume_input()
+cal.volume()
+cal.reset_button()
+cal.load_button()
+cal.connect_button()
+cal.menu()
+root.mainloop()
