@@ -26,6 +26,7 @@ class Calc:
         root.config(menu=menubar)
 
     def openfile(self):
+    	# test for git
         filename = filedialog.askopenfilename()
         file = open(filename)
         input  = list(csv.reader(file))
